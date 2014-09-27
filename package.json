@@ -24,5 +24,10 @@
   },
   "dev-dependencies": {
     "gulp": "~3.8.8"
+  },
+  "dependencies": {
+    "gulp-concat": "~2.4.1",
+    "gulp-uglify": "~1.0.1",
+    "gulp-ng-annotate": "~0.3.3"
   }
 }
