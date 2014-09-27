@@ -1,0 +1,28 @@
+{
+  "name": "ndValidation",
+  "version": "0.0.0",
+  "description": "Validation infrastucure helper for angular js apps",
+  "main": "dist/ndValidation.min.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/nadavsinai/ndValidation"
+  },
+  "keywords": [
+    "angular",
+    "validation",
+    "forms",
+    "bootstrap",
+    "ui.validate"
+  ],
+  "author": "Nadav Sinai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nadavsinai/ndValidation/issues"
+  },
+  "dev-dependencies": {
+    "gulp": "~3.8.8"
+  }
+}

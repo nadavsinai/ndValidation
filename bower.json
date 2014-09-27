@@ -1,0 +1,29 @@
+{
+  "name": "ndValidation",
+  "version": "0.0.0",
+  "authors": [
+    "Nadav Sinai"
+  ],
+  "main": "dist/ndValidation.min.js",
+  "keywords": [
+    "angular",
+    "validation",
+    "forms",
+    "bootstrap",
+    "ui.validate"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nadavsinai/ndValidation",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.25",
+    "ui-utils": "~0.1.1",
+    "angular-translate": "~2.4.0"
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link data-require="bootstrap-css@~3.1.1" data-semver="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <script data-require="angular.js@*" data-semver="1.3.0-beta.5" src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+    <script data-require="ui-utils@0.1.1" data-semver="0.1.1" src="http://angular-ui.github.io/ui-utils/dist/ui-utils.js"></script>
+    <script src="http://rawgit.com/angular-translate/bower-angular-translate/master/angular-translate.min.js"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js'></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.4.0/restangular.js"></script>
+       <script src='../src/validationSvc.js'></script>
+    <script src='../src/config.js'></script>
+    <script src="../src/validationDirectives.js"></script>
+    <script src="app.js"></script>
+    <script src='myModel.js'></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body ng-app="app">
+<div ng-controller="myCtrl" class='container'>
+    <h3>Existing Model edit</h3>
+    <div ng-hide="modelList.length">Loading...</div>
+    <div ng-show="modelList.length" class="row">
+        <ul class='col-sm-5 list-unstyled'>
+            <li ng-repeat="model in modelList">
+                <div class="col-sm-8">
+                 <span>{{model.name}}</span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="btn btn-success" ng-click="enterEditModel(model)"><i
+                            class="glyphicon glyphicon-pencil"></i></span>
+                    <span class="btn btn-danger" ng-click="remove(model)"><i class="glyphicon glyphicon-remove"></i></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <form  ng-if='editModel' name='editForm'>
+        <label> Name:
+            <input ng-model="editModel.name" nd-validation/>
+        </label>
+        <input class='btn btn-success' type="submit" ng-click='save(editModel)' ng-disabled="editForm.$invalid" />
+    </form>
+    <h3>New Model</h3>
+    <form class='form-horizontal' name="newForm">
+        <label> Name:
+            <input ng-model="newModel.name" nd-validation="" />
+        </label>
+        <input class='btn btn-success' ng-click="saveNew(newModel)" type="submit" ng-disabled="newForm.$invalid" />
+    </form>
+</div>
+</body>
+
+</html>
