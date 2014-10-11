@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/nadavsinai/ndValidation/issues"
   },
-  "dev-dependencies": {
+  "devDependencies": {
     "gulp": "~3.8.8"
   },
   "dependencies": {
