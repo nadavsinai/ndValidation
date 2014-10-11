@@ -1,12 +1,23 @@
 (function () {
 
     'use strict';
-    angular.module('app').factory('PersonModel', function () {
-        function PersonModel() {
-            this.name = '';
+    angular.module('app').factory('UserModel', function () {
+        function UserModel(obj) {
+            obj = obj || {};
+            this.name = obj.name || '';
+            this.username = obj.username || '';
+            this.phone = obj.phone || '';
+            this.website = obj.website || '';
+            this.email = obj.email || '';
+            this.address = obj.address || {};
+            if (obj.address) {
+                this.address.street = obj.address.street || '';
+                this.address.city = obj.address.city || '';
+                this.address.zipcode = obj.address.zipcode || '';
+            }
         }
 
-        PersonModel.prototype.$validationConfig = {
+        UserModel.prototype.$validationConfig = {
             name: {
                 required: 'FORMS.REQUIRED',
                 length: [
@@ -15,29 +26,29 @@
                 ]
 
             }
-        }
-        return PersonModel;
-    }).factory('myModelSvc',function(PersonModel,Restangular){
+        };
+        return UserModel;
+    }).factory('myModelSvc', function (UserModel, Restangular) {
 
-        var BaseAPI = Restangular.all('person');
+        var BaseAPI = Restangular.all('users');
 
         var myModelSvc = {
             getList: function () {
-                return BaseAPI.customGETLIST('list.json');
+                return BaseAPI.getList();
             },
             get: function (appId) {
                 return BaseAPI.get(appId);
             },
-            new:function(){
-                return Restangular.restangularizeElement(null,{},'person');
+            new: function () {
+                return Restangular.restangularizeElement(null, {}, 'users');
             }
 
         };
-        Restangular.extendModel('person', function (obj) {
-            var myPersonModelObj = new PersonModel(obj);
-            angular.extend(myPersonModelObj, obj);
-
-            return myPersonModelObj;
+        Restangular.extendModel('users', function (obj) {
+            var myUserModelObj = new UserModel(obj);
+            angular.extend(obj, myUserModelObj);
+            obj.__proto__ = myUserModelObj.__proto__;
+            return obj;
         });
 
         return myModelSvc;

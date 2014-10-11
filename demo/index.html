@@ -2,51 +2,103 @@
 <html>
 
 <head>
-    <link data-require="bootstrap-css@~3.1.1" data-semver="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-    <script data-require="angular.js@*" data-semver="1.3.0-beta.5" src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
-    <script data-require="ui-utils@0.1.1" data-semver="0.1.1" src="http://angular-ui.github.io/ui-utils/dist/ui-utils.js"></script>
+    <link data-require="bootstrap-css@~3.1.1" data-semver="3.2.0" rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <script data-require="angular.js@*" data-semver="1.3.0-beta.5"
+            src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+    <script data-require="ui-utils@0.1.1" data-semver="0.1.1"
+            src="http://angular-ui.github.io/ui-utils/dist/ui-utils.js"></script>
     <script src="http://rawgit.com/angular-translate/bower-angular-translate/master/angular-translate.min.js"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js'></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.4.0/restangular.js"></script>
-       <script src='../src/validationSvc.js'></script>
+    <script src='../src/validationSvc.js'></script>
     <script src='../src/config.js'></script>
     <script src="../src/validationDirectives.js"></script>
     <script src="app.js"></script>
     <script src='myModel.js'></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
 </head>
 
 <body ng-app="app">
 <div ng-controller="myCtrl" class='container'>
     <h3>Existing Model edit</h3>
+
     <div ng-hide="modelList.length">Loading...</div>
     <div ng-show="modelList.length" class="row">
         <ul class='col-sm-5 list-unstyled'>
             <li ng-repeat="model in modelList">
                 <div class="col-sm-8">
-                 <span>{{model.name}}</span>
+                    <span>{{model.name}}</span>
                 </div>
                 <div class="col-sm-4">
                     <span class="btn btn-success" ng-click="enterEditModel(model)"><i
                             class="glyphicon glyphicon-pencil"></i></span>
-                    <span class="btn btn-danger" ng-click="remove(model)"><i class="glyphicon glyphicon-remove"></i></span>
+                    <span class="btn btn-danger" ng-click="remove(model)"><i
+                            class="glyphicon glyphicon-remove"></i></span>
                 </div>
             </li>
         </ul>
     </div>
-    <form  ng-if='editModel' name='editForm'>
-        <label> Name:
-            <input ng-model="editModel.name" nd-validation/>
-        </label>
-        <input class='btn btn-success' type="submit" ng-click='save(editModel)' ng-disabled="editForm.$invalid" />
+    <form ng-if='editModel' name='editForm'>
+        <div class="form-group">
+            <label> Name:
+                <input ng-model="editModel.name" nd-validation/>
+            </label>
+        </div>
+        <div class="form-group">
+            <label> Username:
+                <input ng-model="editModel.username" nd-validation/>
+            </label>
+        </div>
+        <div class="form-group">
+            <label> E-mail:
+                <input ng-model="editModel.email" nd-validation/>
+            </label>
+        </div>
+        <div class="form-group">
+            <label> Website:
+                <input ng-model="editModel.website" nd-validation/>
+            </label>
+        </div>
+        <div class="pane">
+            <div class="pane-body">
+                <h4>Address</h4>
+
+                <div class="form-group">
+                    <label> Street:
+                        <input ng-model="editModel.address.street" nd-validation/>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label> City:
+                        <input ng-model="editModel.address.city" nd-validation/>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label> Zipcode:
+                        <input ng-model="editModel.address.zipcode" nd-validation/>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input class='btn btn-success' type="submit" ng-click='save(editModel)' ng-disabled="editForm.$invalid"/>
+        </div>
     </form>
-    <h3>New Model</h3>
-    <form class='form-horizontal' name="newForm">
-        <label> Name:
-            <input ng-model="newModel.name" nd-validation="" />
-        </label>
-        <input class='btn btn-success' ng-click="saveNew(newModel)" type="submit" ng-disabled="newForm.$invalid" />
-    </form>
+    <div class="text-center">
+        <div class="btn btn-success" ng-click="showNewForm()">Add New Model</div>
+    </div>
+    <div ng-if="newModel">
+        <h3>New Model</h3>
+
+        <form class='form-horizontal' name="newForm">
+            <label> Name:
+                <input ng-model="newModel.name" nd-validation=""/>
+            </label>
+            <input class='btn btn-success' ng-click="saveNew(newModel)" type="submit" ng-disabled="newForm.$invalid"/>
+        </form>
+    </div>
 </div>
 </body>
 
