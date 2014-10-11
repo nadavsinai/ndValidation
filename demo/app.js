@@ -2,9 +2,11 @@
 
     'use strict';
 
-    angular.module('app', ['pascalprecht.translate', 'ndValidation', 'restangular'])
+    angular.module('app', ['pascalprecht.translate', 'ndValidation', 'restangular', 'ui.validate'])
         .config(function ($translateProvider, RestangularProvider, ndValidationSvcProvider) {
-            ndValidationSvcProvider.setDefaultValidationSource('$validationConfig');  // our default validationConfig source
+            ndValidationSvcProvider
+                .setDefaultValidationSource('$validationConfig')
+                .setTranslationSvc('$translate');  // our default validationConfig source
             RestangularProvider.setBaseUrl('http://jsonplaceholder.typicode.com/');
             $translateProvider.translations('en', {
                 "FORMS": {

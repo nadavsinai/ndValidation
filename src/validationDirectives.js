@@ -193,20 +193,27 @@
      eg min length for field can be a message like this : {{input}} length must be more than {{min}}
      the actual show/hide functions also occur here (as we have access to the $element here), but are operated from the ngModel directive above.
      */
-        .directive('validationMessage', function (ndValidationSvc, $translate, $log) {
+        .directive('validationMessage', function (ndValidationSvc, $log) {
+            var $translate = ndValidationSvc.getTranslationSvc();
             return {
                 restrict: 'E',
                 replace: true,
                 template: "<span class='help-block alert-warning hidden'></span>",
                 link: function ($scope, $element, $attrs) {
+
                     var watcher = ndValidationSvc.subscribe($attrs.input, $attrs.key);
                     if (watcher.message) {
-                        $translate(watcher.message, watcher.translationProperties).then(function (translatedMessage) {
-                            $element.html(translatedMessage);
-                        }, function (error) {
-                            $log.info('Validation for ' + $attrs.input + ' input validation key ' + $attrs.key + ' was not translated  - "' + error + '"');
+                        if ($translate) {
+                            $translate(watcher.message, watcher.translationProperties).then(function (translatedMessage) {
+                                $element.html(translatedMessage);
+                            }, function (error) {
+                                $log.info('Validation for ' + $attrs.input + ' input validation key ' + $attrs.key + ' was not translated  - "' + error + '"');
+                                $element.html(watcher.message);
+                            });
+                        }
+                        else { // no translation
                             $element.html(watcher.message);
-                        });
+                        }
                     }
                     watcher.show = function () {
                         $element.removeClass('hidden');

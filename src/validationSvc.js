@@ -5,11 +5,16 @@
     /**
      * Validation service for client side forms
      */
-    angular.module('ndValidation',['ui.validate'])
+    angular.module('ndValidation', []) // for use of equality and custom validation rules you will need to include 'ui.validate' module - see  http://angular-ui.github.io/ui-utils/#/validate
         .provider('ndValidationSvc', function () {
-            var defaultValidationSource = null, watchers = {};
+            var defaultValidationSource = '$validationConfig', watchers = {}, tranlationSvc = null, self = this;
             this.setDefaultValidationSource = function (src) {
                 defaultValidationSource = src;
+                return self;
+            };
+            this.setTranslationSvc = function (svc) {
+                tranlationSvc = svc;
+                return self;
             };
             function Watcher(key, input, validationOptions) {
                 // we will pass the Capitalized input name to the translation service in the validationMessage directive
@@ -20,10 +25,16 @@
                 this.input = input;
             }
 
-            this.$get = function () {
+            this.$get = function ($rootElement) {
                 return {
                     getDefaultValidationSource: function (modelInstance) {// called by the ndValidation directive
                         return modelInstance[defaultValidationSource];
+                    },
+                    getTranslationSvc: function () {
+                        if (tranlationSvc) {
+                            return $rootElement.injector().get(tranlationSvc);
+                        }
+                        return null;
                     },
                     addMessage: function (input, key, validationOptions) { // called by the ndValidation directive
                         var watcher = new Watcher(key, input, validationOptions);
