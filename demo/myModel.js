@@ -17,6 +17,7 @@
             }
         }
 
+        var allowedVals = ['Berlin', 'London'];
         UserModel.prototype.$validationConfig = {
             name: {
                 required: 'FORMS.REQUIRED',
@@ -24,7 +25,24 @@
                     {min: 6, message: 'FORMS.MIN_LENGTH'},
                     {max: 12, message: 'FORMS.MAX_LENGTH'}
                 ]
-
+            },
+            username: {
+                required: 'FORMS.REQUIRED',
+                format: {type: 'pattern', pattern: '/^[a-z0-9_-]*$/', message: 'FORMS.ALLOWED_CHARS'},
+                length: [{min: 6, message: 'FORMS.MIN_LENGTH'}, {max: 12, message: 'FORMS.MAX_LENGTH'}]
+            },
+            email: {format: {type: 'email', message: 'FORMS.EMAIL_FORMAT'}},
+            website: {format: {type: 'url', message: 'FORMS.URL_FORMAT'}},
+            address: {
+                street: {required: 'FORMS.REQUIRED'},
+                city: {
+                    custom: {
+                        functionObj: function (value) {
+                            return (allowedVals.indexOf(value) !== -1);
+                        }, message: 'Only Berlin and London are allowed'
+                    }
+                },
+                zipcode: {format: {type: 'number', 'message': 'Must be numeric'}}
             }
         };
         return UserModel;
@@ -47,7 +65,7 @@
         Restangular.extendModel('users', function (obj) {
             var myUserModelObj = new UserModel(obj);
             angular.extend(obj, myUserModelObj);
-            obj.__proto__ = myUserModelObj.__proto__;
+            obj.__proto__ = myUserModelObj.__proto__; // we want to keep the prototype too..
             return obj;
         });
 

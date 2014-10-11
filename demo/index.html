@@ -93,9 +93,48 @@
         <h3>New Model</h3>
 
         <form class='form-horizontal' name="newForm">
-            <label> Name:
-                <input ng-model="newModel.name" nd-validation=""/>
-            </label>
+            <div class="form-group">
+                <label> Name:
+                    <input ng-model="newModel.name" nd-validation/>
+                </label>
+            </div>
+            <div class="form-group">
+                <label> Username:
+                    <input ng-model="newModel.username" nd-validation/>
+                </label>
+            </div>
+            <div class="form-group">
+                <label> E-mail:
+                    <input ng-model="newModel.email" nd-validation/>
+                </label>
+            </div>
+            <div class="form-group">
+                <label> Website:
+                    <input ng-model="newModel.website" nd-validation/>
+                </label>
+            </div>
+            <div class="pane">
+                <div class="pane-body">
+                    <h4>Address</h4>
+
+                    <div class="form-group">
+                        <label> Street:
+                            <input ng-model="newModel.address.street" nd-validation/>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label> City:
+                            <input ng-model="newModel.address.city" nd-validation/>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label> Zipcode:
+                            <input ng-model="newModel.address.zipcode" nd-validation/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <input class='btn btn-success' ng-click="saveNew(newModel)" type="submit" ng-disabled="newForm.$invalid"/>
         </form>
     </div>
