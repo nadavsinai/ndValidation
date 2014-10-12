@@ -53,6 +53,6 @@ The following validations are supported :
 
  
  ##TODO:
- 1.use $templateCache to help customize the message template
- 2.make use of ng-messages where available, support ng-model options and other angular 1.3 considerations
- 3.add tests
+1. use $templateCache to help customize the message template
+2. make use of ng-messages where available, support ng-model options and other angular 1.3 considerations
+3. add tests
