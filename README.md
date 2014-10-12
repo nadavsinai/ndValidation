@@ -7,10 +7,10 @@ Instead of re-writing the same validation directives and user messages (with the
 in the model prototype (or anywhere else you find logical to you) and use this directive on each input.
 This will:
 
--parse validation rules,
--add relevant directives (support for angular own and custom validation rules)
--add user message element directly after the input element with the defined message passed through translation
--add a ngModel parsers/formatters based watcher that will trigger the display of the relevant message upon input change.
+- parse validation rules,
+- add relevant directives (support for angular own and custom validation rules)
+- add user message element directly after the input element with the defined message passed through translation
+- add a ngModel parsers/formatters based watcher that will trigger the display of the relevant message upon input change.
 
 ##Install & usage 
 
