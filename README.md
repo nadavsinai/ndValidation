@@ -35,24 +35,24 @@ This should be an object with keys representing the input names (model propertie
          - an array with many validation hashes as above.
      
 The following validations are supported :
-       required : 'message',
-       length : [{min:5,message:'message'},{max:5,message:'message'}]
-       format : {type:'url' message:'message}
-                 OR
-                 {type:'email' message:'message}
-                 OR
-                 {type:'number' message:'message}
-                 OR
-                 {type:'pattern' ,pattern:'/\.\/',message:'message'} // any valid regex
+- **required** : 'message',
+- **length** : [{min:5,message:'message'},{max:5,message:'message'}]
+- **format** : {type:'url' message:'message}  
+             OR  
+         {type:'email' message:'message}  
+                          OR  
+         {type:'number' message:'message}  
+                 OR  
+        {type:'pattern' ,pattern:'/\.\/',message:'message'} // any valid regex  
                  
-####for the following two rules one must include ui-validate module in the app dependencies , see http://angular-ui.github.io/ui-utils/#/validate
- equality :{otherValue:'constant',message:'message'}
-                     OR
+#####for the following two rules one must include ui-validate module in the app dependencies , see http://angular-ui.github.io/ui-utils/#/validate
+- **equality** :{otherValue:'constant',message:'message'}  
+                     OR  
  {otherModel:'scopeProperty',message:'message'} //good for matching passwords retype fields
- custom: {functionObj:function(value){ //anything goes, return boolean});
+- **custom**: {functionObj:function(value){ //anything goes, return boolean});
 
  
- ##TODO:
+####TODO:
 1. use $templateCache to help customize the message template
 2. make use of ng-messages where available, support ng-model options and other angular 1.3 considerations
 3. add tests
