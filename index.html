@@ -21,13 +21,11 @@
 <header>
     <h1>Nd-Validation</h1>
 
-    <p>Validation infrastructure helper for angular.js apps</p>
+    <p>Angular.js Data Model Based Validation infrastructure</p>
 
     <p class="view"><a href="https://github.com/nadavsinai/ndValidation">View the Project on GitHub
         <small>nadavsinai/ndValidation</small>
     </a></p>
-
-
     <ul>
         <li><a href="https://github.com/nadavsinai/ndValidation/zipball/master">Download <strong>ZIP File</strong></a>
         </li>
@@ -35,21 +33,59 @@
         </li>
         <li><a href="https://github.com/nadavsinai/ndValidation">View On <strong>GitHub</strong></a></li>
     </ul>
+    <h4>Links</h4>
+    <ul>
+        <li><a href="#background">Background</a> </li>
+        <li><a href="#install--usage">Installation & usage</a> </li>
+        <li><a href="#c">Demo App</a> </li>
+    </ul>
 </header>
 <section>
-    <h1>
-        <a name="ndvalidation" class="anchor" href="#ndvalidation"><span class="octicon octicon-link"></span></a>ndValidation
-    </h1>
+    <h2>
+        <a name="Background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background
+    </h2>
 
-    <h3>
-        <a name="validation-infrastructure-helper-for-angularjs-apps" class="anchor"
-           href="#validation-infrastructure-helper-for-angularjs-apps"><span class="octicon octicon-link"></span></a>Validation
-        infrastructure helper for Angular.js apps</h3>
+    <p>Writing forms in large applications is tiresome - one must repeat the same validation directives for each model
+        property for each form the model is included.
 
-    <p>Instead of re-writing the same validation directives and user messages (with their relevant display logic) add
-        the validation rules for each model property
-        in the model prototype (or anywhere else you find logical to you) and use this directive on each input.
-        This will:</p>
+        and even worse one must also include the same validation error user messages with their relevant display logic.
+
+        making changes becomes laborious...
+
+        for example some code from <a target="_blank" href="https://docs.angularjs.org/guide/forms"> angular.js docs
+            site</a>
+<pre><code>
+    <form name="form" class="css-form" novalidate>
+        E-mail:
+        <input type="email" ng-model="user.email" name="uEmail" required/><br/>
+
+        <div ng-show="form.uEmail.$dirty && form.uEmail.$invalid">Invalid:
+            <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+            <span ng-show="form.uEmail.$error.email">This is not a valid email.</span>
+        </div>
+    </form>
+</code></pre>
+
+    if using nd-validate this boils down to
+    <pre><code>
+        <input type="email" ng-model="user.email" nd-validate/>
+    </code></pre>
+
+
+    the validation rules and messages are configured once per data model,
+    for example for this model it would look like this
+    <pre><code>
+        User.prototype.$validationConfig = {
+            email:{required:'Tell us your email.'},
+            format:{type:'email',message:'This is not a valid email.'}
+        }
+    </code></pre>
+
+    The place in which this is declared is quite dynamic although I do
+    recommend to cast proper data-models, validation configuration can be put on the scope and referenced from
+    directive's attribute.
+
+    The directive will:</p>
 
     <ul>
         <li>parse validation rules,</li>
@@ -132,12 +168,12 @@
         </li>
     </ul>
 </section>
-<section ng-controller="myCtrl">
+<section id='demo' ng-controller="myCtrl">
     <h3>Existing Model edit</h3>
 
     <div ng-hide="modelList.length">Loading...</div>
     <div ng-show="modelList.length" class="row">
-        <ul class='col-sm-5 list-unstyled'>
+        <ul class='list-unstyled'>
             <li ng-repeat="model in modelList">
                 <div class="col-sm-8">
                     <span>{{model.name}}</span>
@@ -152,24 +188,25 @@
         </ul>
     </div>
     <form ng-if='editModel' name='editForm'>
+        <small>* - required field</small>
         <div class="form-group">
-            <label> Name:
-                <input ng-model="editModel.name" nd-validation/>
+            <label>Name(*):
+                <input class="form-control" ng-model="editModel.name" nd-validation/>
             </label>
         </div>
         <div class="form-group">
-            <label> Username:
-                <input ng-model="editModel.username" nd-validation/>
+            <label> Username(*):
+                <input class="form-control" ng-model="editModel.username" nd-validation/>
             </label>
         </div>
         <div class="form-group">
             <label> E-mail:
-                <input ng-model="editModel.email" nd-validation/>
+                <input class="form-control" ng-model="editModel.email" nd-validation/>
             </label>
         </div>
         <div class="form-group">
             <label> Website:
-                <input ng-model="editModel.website" nd-validation/>
+                <input class="form-control" ng-model="editModel.website" nd-validation/>
             </label>
         </div>
         <div class="pane">
@@ -178,17 +215,17 @@
 
                 <div class="form-group">
                     <label> Street:
-                        <input ng-model="editModel.address.street" nd-validation/>
+                        <input class="form-control" ng-model="editModel.address.street" nd-validation/>
                     </label>
                 </div>
                 <div class="form-group">
                     <label> City:
-                        <input ng-model="editModel.address.city" nd-validation/>
+                        <input class="form-control" ng-model="editModel.address.city" nd-validation/>
                     </label>
                 </div>
                 <div class="form-group">
                     <label> Zipcode:
-                        <input ng-model="editModel.address.zipcode" nd-validation/>
+                        <input class="form-control" ng-model="editModel.address.zipcode" nd-validation/>
                     </label>
                 </div>
             </div>
@@ -207,22 +244,22 @@
         <form class='form-horizontal' name="newForm">
             <div class="form-group">
                 <label> Name:
-                    <input ng-model="newModel.name" nd-validation/>
+                    <input class="form-control" ng-model="newModel.name" nd-validation/>
                 </label>
             </div>
             <div class="form-group">
                 <label> Username:
-                    <input ng-model="newModel.username" nd-validation/>
+                    <input class="form-control" ng-model="newModel.username" nd-validation/>
                 </label>
             </div>
             <div class="form-group">
                 <label> E-mail:
-                    <input ng-model="newModel.email" nd-validation/>
+                    <input class="form-control" ng-model="newModel.email" nd-validation/>
                 </label>
             </div>
             <div class="form-group">
                 <label> Website:
-                    <input ng-model="newModel.website" nd-validation/>
+                    <input class="form-control" ng-model="newModel.website" nd-validation/>
                 </label>
             </div>
             <div class="pane">
@@ -231,17 +268,17 @@
 
                     <div class="form-group">
                         <label> Street:
-                            <input ng-model="newModel.address.street" nd-validation/>
+                            <input class="form-control" ng-model="newModel.address.street" nd-validation/>
                         </label>
                     </div>
                     <div class="form-group">
                         <label> City:
-                            <input ng-model="newModel.address.city" nd-validation/>
+                            <input class="form-control" ng-model="newModel.address.city" nd-validation/>
                         </label>
                     </div>
                     <div class="form-group">
                         <label> Zipcode:
-                            <input ng-model="newModel.address.zipcode" nd-validation/>
+                            <input class="form-control" ng-model="newModel.address.zipcode" nd-validation/>
                         </label>
                     </div>
                 </div>
