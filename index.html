@@ -1,6 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Nd-Validation by nadavsinai</title>
@@ -11,110 +12,177 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Nd-Validation</h1>
-        <p>Validation infrastructure helper for angular js apps</p>
+    <link data-require="bootstrap-css@~3.1.1" data-semver="3.2.0" rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
 
-        <p class="view"><a href="https://github.com/nadavsinai/ndValidation">View the Project on GitHub <small>nadavsinai/ndValidation</small></a></p>
+</head>
+
+<body class="wrapper" ng-app="app">
+<header>
+    <h1>Nd-Validation</h1>
+
+    <p>Validation infrastructure helper for angular.js apps</p>
+
+    <p class="view"><a href="https://github.com/nadavsinai/ndValidation">View the Project on GitHub
+        <small>nadavsinai/ndValidation</small>
+    </a></p>
 
 
-        <ul>
-          <li><a href="https://github.com/nadavsinai/ndValidation/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nadavsinai/ndValidation/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nadavsinai/ndValidation">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="ndvalidation" class="anchor" href="#ndvalidation"><span class="octicon octicon-link"></span></a>ndValidation</h1>
+    <ul>
+        <li><a href="https://github.com/nadavsinai/ndValidation/zipball/master">Download <strong>ZIP File</strong></a>
+        </li>
+        <li><a href="https://github.com/nadavsinai/ndValidation/tarball/master">Download <strong>TAR Ball</strong></a>
+        </li>
+        <li><a href="https://github.com/nadavsinai/ndValidation">View On <strong>GitHub</strong></a></li>
+    </ul>
+</header>
+<section>
+    <h1>
+        <a name="ndvalidation" class="anchor" href="#ndvalidation"><span class="octicon octicon-link"></span></a>ndValidation
+    </h1>
 
-<h3>
-<a name="validation-infrastructure-helper-for-angularjs-apps" class="anchor" href="#validation-infrastructure-helper-for-angularjs-apps"><span class="octicon octicon-link"></span></a>Validation infrastructure helper for Angular.js apps</h3>
+    <h3>
+        <a name="validation-infrastructure-helper-for-angularjs-apps" class="anchor"
+           href="#validation-infrastructure-helper-for-angularjs-apps"><span class="octicon octicon-link"></span></a>Validation
+        infrastructure helper for Angular.js apps</h3>
 
-<p>Instead of re-writing the same validation directives and user messages (with their relevant display logic) add the validation rules for each model property 
-in the model prototype (or anywhere else you find logical to you) and use this directive on each input.
-This will:</p>
+    <p>Instead of re-writing the same validation directives and user messages (with their relevant display logic) add
+        the validation rules for each model property
+        in the model prototype (or anywhere else you find logical to you) and use this directive on each input.
+        This will:</p>
 
-<ul>
-<li>parse validation rules,</li>
-<li>add relevant directives (support for angular own and custom validation rules)</li>
-<li>add user message element directly after the input element with the defined message passed through translation</li>
-<li>add a ngModel parsers/formatters based watcher that will trigger the display of the relevant message upon input change.</li>
-</ul>
+    <ul>
+        <li>parse validation rules,</li>
+        <li>add relevant directives (support for angular own and custom validation rules)</li>
+        <li>add user message element directly after the input element with the defined message passed through
+            translation
+        </li>
+        <li>add a ngModel parsers/formatters based watcher that will trigger the display of the relevant message upon
+            input change.
+        </li>
+    </ul>
 
-<h2>
-<a name="install--usage" class="anchor" href="#install--usage"><span class="octicon octicon-link"></span></a>Install &amp; usage</h2>
+    <h2>
+        <a name="install--usage" class="anchor" href="#install--usage"><span class="octicon octicon-link"></span></a>Install
+        &amp; usage</h2>
 
-<p>with bower one can install using</p>
+    <p>with bower one can install using</p>
 
 <pre><code>bower install nd-validate
 </code></pre>
 
-<p>add the script tag and add the module 'ndValidation' as dependency to your app.</p>
+    <p>add the script tag and add the module 'ndValidation' as dependency to your app.</p>
 
-<p>On an input field (within or out of a form) add the nd-validation attribute to automatically add validation rules and associated messages by the model validation definition
-the default is an object found on the prototype of the model instance called $validationConfig, (this can be set via the  ndValidationSvc.setDefaultValidationSource at config time).
-or, alternatively using a validation object which is found on the scope and is refered to in the attribute's value e.g nd-validation='config.get("user").validation'</p>
+    <p>On an input field (within or out of a form) add the nd-validation attribute to automatically add validation rules
+        and associated messages by the model validation definition
+        the default is an object found on the prototype of the model instance called $validationConfig, (this can be set
+        via the ndValidationSvc.setDefaultValidationSource at config time).
+        or, alternatively using a validation object which is found on the scope and is refered to in the attribute's
+        value e.g nd-validation='config.get("user").validation'</p>
 
-<p>Special note on Ng-repeat and such repeaters- if a model appears more than once in page's scope (like in ng-repeat) you must make sure the models are unique - in NgRepeat we add '_'+$index to the input name automatically</p>
+    <p>Special note on Ng-repeat and such repeaters- if a model appears more than once in page's scope (like in
+        ng-repeat) you must make sure the models are unique - in NgRepeat we add '_'+$index to the input name
+        automatically</p>
 
-<h3>
-<a name="validation-config" class="anchor" href="#validation-config"><span class="octicon octicon-link"></span></a>Validation config</h3>
+    <h3>
+        <a name="validation-config" class="anchor" href="#validation-config"><span class="octicon octicon-link"></span></a>Validation
+        config</h3>
 
-<p>This should be an object with keys representing the input names (model properties) and values being either
-         - a string (simple message, eg for required),
-         - a hash with options an message (eg. for length : {min:5,message:'must be longer than 5'})
-         - an array with many validation hashes as above.</p>
+    <p>This should be an object with keys representing the input names (model properties) and values being either
+        - a string (simple message, eg for required),
+        - a hash with options an message (eg. for length : {min:5,message:'must be longer than 5'})
+        - an array with many validation hashes as above.</p>
 
-<p>The following validations are supported :</p>
+    <p>The following validations are supported :</p>
 
-<ul>
-<li>
-<strong>required</strong> : 'message',</li>
-<li>
-<strong>length</strong> : [{min:5,message:'message'},{max:5,message:'message'}]</li>
-<li>
-<strong>format</strong> : {type:'url' message:'message}<br>
-         OR<br>
-     {type:'email' message:'message}<br>
-                      OR<br>
-     {type:'number' message:'message}<br>
-             OR<br>
-    {type:'pattern' ,pattern:'/.\/',message:'message'} // any valid regex<br>
-</li>
-</ul>
+    <ul>
+        <li>
+            <strong>required</strong> : 'message',
+        </li>
+        <li>
+            <strong>length</strong> : [{min:5,message:'message'},{max:5,message:'message'}]
+        </li>
+        <li>
+            <strong>format</strong> : {type:'url' message:'message}<br>
+            OR<br>
+            {type:'email' message:'message}<br>
+            OR<br>
+            {type:'number' message:'message}<br>
+            OR<br>
+            {type:'pattern' ,pattern:'/.\/',message:'message'} // any valid regex<br>
+        </li>
+    </ul>
 
-<h5>
-<a name="for-the-following-two-rules-one-must-include-ui-validate-module-in-the-app-dependencies--see-httpangular-uigithubioui-utilsvalidate" class="anchor" href="#for-the-following-two-rules-one-must-include-ui-validate-module-in-the-app-dependencies--see-httpangular-uigithubioui-utilsvalidate"><span class="octicon octicon-link"></span></a>for the following two rules one must include ui-validate module in the app dependencies , see <a href="http://angular-ui.github.io/ui-utils/#/validate">http://angular-ui.github.io/ui-utils/#/validate</a>
-</h5>
+    <h5>
+        <a name="for-the-following-two-rules-one-must-include-ui-validate-module-in-the-app-dependencies--see-httpangular-uigithubioui-utilsvalidate"
+           class="anchor"
+           href="#for-the-following-two-rules-one-must-include-ui-validate-module-in-the-app-dependencies--see-httpangular-uigithubioui-utilsvalidate"><span
+                class="octicon octicon-link"></span></a>for the following two rules one must include ui-validate module
+        in the app dependencies , see <a href="http://angular-ui.github.io/ui-utils/#/validate">http://angular-ui.github.io/ui-utils/#/validate</a>
+    </h5>
 
-<ul>
-<li>
-<strong>equality</strong> :{otherValue:'constant',message:'message'}<br>
-                 OR<br>
-{otherModel:'scopeProperty',message:'message'} //good for matching passwords retype fields</li>
-<li>
-<strong>custom</strong>: {functionObj:function(value){ //anything goes, return boolean});</li>
-</ul>
+    <ul>
+        <li>
+            <strong>equality</strong> :{otherValue:'constant',message:'message'}<br>
+            OR<br>
+            {otherModel:'scopeProperty',message:'message'} //good for matching passwords retype fields
+        </li>
+        <li>
+            <strong>custom</strong>: {functionObj:function(value){ //anything goes, return boolean});
+        </li>
+    </ul>
+</section>
+<footer>
+    <p>This project is maintained by <a href="https://github.com/nadavsinai">nadavsinai</a></p>
+</footer>
+</div>
+</body>
+<div ng-controller="myCtrl" class='container'>
+    <h3>Existing Model edit</h3>
 
-<h4>
-<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h4>
-
-<ol>
-<li>use $templateCache to help customize the message template</li>
-<li>make use of ng-messages where available, support ng-model options and other angular 1.3 considerations</li>
-<li>add tests</li>
-</ol>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/nadavsinai">nadavsinai</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+    <div ng-hide="modelList.length">Loading...</div>
+    <div ng-show="modelList.length" class="row">
+        <ul class='col-sm-5 list-unstyled'>
+            <li ng-repeat="model in modelList">
+                <div class="col-sm-8">
+                    <span>{{model.name}}</span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="btn btn-success" ng-click="enterEditModel(model)"><i
+                            class="glyphicon glyphicon-pencil"></i></span>
+                    <span class="btn btn-danger" ng-click="remove(model)"><i
+                            class="glyphicon glyphicon-remove"></i></span>
+                </div>
+            </li>
+        </ul>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+    <form ng-if='editModel' name='editForm'>
+        <label> Name:
+            <input ng-model="editModel.name" nd-validation/>
+        </label>
+        <input class='btn btn-success' type="submit" ng-click='save(editModel)' ng-disabled="editForm.$invalid"/>
+    </form>
+    <h3>New Model</h3>
+
+    <form class='form-horizontal' name="newForm">
+        <label> Name:
+            <input ng-model="newModel.name" nd-validation=""/>
+        </label>
+        <input class='btn btn-success' ng-click="saveNew(newModel)" type="submit" ng-disabled="newForm.$invalid"/>
+    </form>
+</div>
+<script data-require="angular.js@*" data-semver="1.3.0-beta.5"
+        src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+<script data-require="ui-utils@0.1.1" data-semver="0.1.1"
+        src="http://angular-ui.github.io/ui-utils/dist/ui-utils.js"></script>
+<script src="http://rawgit.com/angular-translate/bower-angular-translate/master/angular-translate.min.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js'></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.4.0/restangular.js"></script>
+<script src='javascripts/validationSvc.js'></script>
+<script src='javascripts/config.js'></script>
+<script src="javascripts/validationDirectives.js"></script>
+<script src="javascripts/app.js"></script>
+<script src='javascripts/myModel.js'></script>
+<script src="javascripts/scale.fix.js"></script>
+</body>
 </html>
