@@ -40,7 +40,7 @@
      *  internalInfo - this runs before every other directive, and re-compiles the element with some other directives as per the input's validation policy, it also adds the validation messages directive below the input
      */
 
-        .directive('ndValidation', function ($compile, ndValidationSvc, $log, config) {
+        .directive('ndValidation', function ($compile, ndValidationSvc, $log, config, $parse) {
             return {
                 restrict: 'A',
                 priority: 1000,// important - must be before ngModel
@@ -51,7 +51,7 @@
                             $element.removeAttr('nd-validation'); // first things first - make sure we don't compile again, prevent infinite loop
                             var instanceName = $attrs.ngModel.replace(/\.\w{0,}/g, '');
                             var modelInstance = $scope[instanceName]; // eg get the app from ng-model='app.title'
-                            var inputName, baseInputName = $attrs.ngModel.replace(/.*\./g, '');// eg get the title from ng-model='app.title'
+                            var inputName, baseInputName = $attrs.ngModel.replace(instanceName + '.', '');// eg get the title from ng-model='app.title'
                             if ($scope.hasOwnProperty('$index')) { // we are in Ng-Repeat  - must add index to the inputName
                                 inputName = baseInputName + '_' + $scope.$index;
                             }
@@ -62,75 +62,77 @@
                             if (!validationConfigSource) {
                                 $log.error('Validation source is not an object, can not parse rules');
                             }
-                            else if (validationConfigSource[baseInputName]) {
-                                var validationConf = validationConfigSource[baseInputName]; // all we care about is this inputs config.
-                                var createHelpElement = function (validationKey, validationOptions) {
-                                    var watcher = ndValidationSvc.addMessage(inputName, validationKey, validationOptions);
-                                    return angular.element("<validation-message input='" + watcher.input + "' key='" + watcher.key + "'></validation-message>");
-                                };
-                                angular.forEach(validationConf, function (validationOptions, validationType) {
-                                    if (!angular.isArray(validationOptions)) { // support single hashes and strings
-                                        validationOptions = [validationOptions];
-                                    }
-                                    angular.forEach(validationOptions, function (validationOptions) { // we go through the validations
-                                        if (typeof validationOptions === 'string') {
-                                            validationOptions = {message: validationOptions}; // our validation only has message - make it an object with message
+                            else {
+                                var validationConf = $parse(baseInputName)(validationConfigSource); // all we care about is this inputs config.
+                                if (validationConf) {
+                                    var createHelpElement = function (validationKey, validationOptions) {
+                                        var watcher = ndValidationSvc.addMessage(inputName, validationKey, validationOptions);
+                                        return angular.element("<validation-message input='" + watcher.input + "' key='" + watcher.key + "'></validation-message>");
+                                    };
+                                    angular.forEach(validationConf, function (validationOptions, validationType) {
+                                        if (!angular.isArray(validationOptions)) { // support single hashes and strings
+                                            validationOptions = [validationOptions];
                                         }
-                                        switch (validationType) {
-                                            case 'format':
-                                                switch (validationOptions.type) {
-                                                    case  'url' :
-                                                        $element.attr('type', 'url');
-                                                        $element.after($compile(createHelpElement('url', validationOptions))($scope));
-                                                        break;
-                                                    case  'email' :
-                                                        $element.attr('type', 'email');
-                                                        $element.after($compile(createHelpElement('email', validationOptions))($scope));
-                                                        break;
-                                                    case  'number' :
-                                                        $element.attr('type', 'number');
-                                                        $element.after($compile(createHelpElement('number', validationOptions))($scope));
-                                                        break;
-                                                    case 'pattern':
-                                                        $element.attr('ng-pattern', validationOptions.pattern);
-                                                        $element.after($compile(createHelpElement('pattern', validationOptions))($scope));
-                                                        break;
-                                                }
-                                                break;
-                                            case 'length':
-                                                if (validationOptions.min) {
-                                                    $element.attr('ng-minlength', validationOptions.min);
-                                                    $element.after($compile(createHelpElement('minlength', validationOptions))($scope));
-                                                }
-                                                if (validationOptions.max) {
-                                                    $element.attr('ng-maxlength', validationOptions.min);
-                                                    $element.after($compile(createHelpElement('maxlength', validationOptions))($scope));
-                                                }
-                                                break;
-                                            case 'equality':
-                                                var otherValue = validationOptions.otherValue || validationOptions.otherModel;
-                                                $element.attr('ui-validate', "'$value==" + instanceName + '.' + otherValue + "'");
-                                                if (validationOptions.otherModel) {
-                                                    $element.attr('ui-validate-watch', "'" + instanceName + '.' + otherValue + "'");
-                                                }
-                                                $element.after($compile(createHelpElement('validator', validationOptions))($scope));
-                                                break;
-                                            case 'custom':
-                                                if (typeof validationOptions.functionObj === 'function') {
-                                                    var validtionName = 'ndValidation_' + inputName + '_' + Math.floor(Math.random() * 100);
-                                                    config.set(validtionName, validationOptions.functionObj);
-                                                    $element.attr('ui-validate', '{' + validtionName + ':"$validationConfig.get(\'' + validtionName + '\')($value)"}');
-                                                    $element.after($compile(createHelpElement(validtionName, validationOptions))($scope));
-                                                }
-                                                break;
-                                            case 'required':
-                                                $element.attr('required', 'required');
-                                                $element.after($compile(createHelpElement('required', validationOptions))($scope));
-                                                break;
+                                        angular.forEach(validationOptions, function (validationOptions) { // we go through the validations
+                                            if (typeof validationOptions === 'string') {
+                                                validationOptions = {message: validationOptions}; // our validation only has message - make it an object with message
+                                            }
+                                            switch (validationType) {
+                                                case 'format':
+                                                    switch (validationOptions.type) {
+                                                        case  'url' :
+                                                            $element.attr('type', 'url');
+                                                            $element.after($compile(createHelpElement('url', validationOptions))($scope));
+                                                            break;
+                                                        case  'email' :
+                                                            $element.attr('type', 'email');
+                                                            $element.after($compile(createHelpElement('email', validationOptions))($scope));
+                                                            break;
+                                                        case  'number' :
+                                                            $element.attr('type', 'number');
+                                                            $element.after($compile(createHelpElement('number', validationOptions))($scope));
+                                                            break;
+                                                        case 'pattern':
+                                                            $element.attr('ng-pattern', validationOptions.pattern);
+                                                            $element.after($compile(createHelpElement('pattern', validationOptions))($scope));
+                                                            break;
+                                                    }
+                                                    break;
+                                                case 'length':
+                                                    if (validationOptions.min) {
+                                                        $element.attr('ng-minlength', validationOptions.min);
+                                                        $element.after($compile(createHelpElement('minlength', validationOptions))($scope));
+                                                    }
+                                                    if (validationOptions.max) {
+                                                        $element.attr('ng-maxlength', validationOptions.min);
+                                                        $element.after($compile(createHelpElement('maxlength', validationOptions))($scope));
+                                                    }
+                                                    break;
+                                                case 'equality':
+                                                    var otherValue = validationOptions.otherValue || validationOptions.otherModel;
+                                                    $element.attr('ui-validate', "'$value==" + instanceName + '.' + otherValue + "'");
+                                                    if (validationOptions.otherModel) {
+                                                        $element.attr('ui-validate-watch', "'" + instanceName + '.' + otherValue + "'");
+                                                    }
+                                                    $element.after($compile(createHelpElement('validator', validationOptions))($scope));
+                                                    break;
+                                                case 'custom':
+                                                    if (typeof validationOptions.functionObj === 'function') {
+                                                        var validtionName = 'ndValidation_' + inputName + '_' + Math.floor(Math.random() * 100);
+                                                        config.set(validtionName, validationOptions.functionObj);
+                                                        $element.attr('ui-validate', '{' + validtionName + ':"$validationConfig.get(\'' + validtionName + '\')($value)"}');
+                                                        $element.after($compile(createHelpElement(validtionName, validationOptions))($scope));
+                                                    }
+                                                    break;
+                                                case 'required':
+                                                    $element.attr('required', 'required');
+                                                    $element.after($compile(createHelpElement('required', validationOptions))($scope));
+                                                    break;
 
-                                        }
+                                            }
+                                        });
                                     });
-                                });
+                                }
                             }
                             $compile($element)($scope);
 
@@ -151,7 +153,8 @@
                 compile: function (tElement, tAttr) {
                     return {
                         post: function ($scope, $element, $attrs, ngModelCntrl) {
-                            var inputName = $attrs.ngModel.replace(/.*\./g, '');
+                            var instanceName = $attrs.ngModel.replace(/\.\w{0,}/g, '');
+                            var inputName = $attrs.ngModel.replace(instanceName + '.', '');
                             if ($scope.hasOwnProperty('$index')) { // we are in Ng-Repeat  - must add index
                                 inputName += '_' + $scope.$index;
                             }
@@ -190,20 +193,27 @@
      eg min length for field can be a message like this : {{input}} length must be more than {{min}}
      the actual show/hide functions also occur here (as we have access to the $element here), but are operated from the ngModel directive above.
      */
-        .directive('validationMessage', function (ndValidationSvc, $translate, $log) {
+        .directive('validationMessage', function (ndValidationSvc, $log) {
+            var $translate = ndValidationSvc.getTranslationSvc();
             return {
                 restrict: 'E',
                 replace: true,
                 template: "<span class='help-block alert-warning hidden'></span>",
                 link: function ($scope, $element, $attrs) {
+
                     var watcher = ndValidationSvc.subscribe($attrs.input, $attrs.key);
                     if (watcher.message) {
-                        $translate(watcher.message, watcher.translationProperties).then(function (translatedMessage) {
-                            $element.html(translatedMessage);
-                        }, function (error) {
-                            $log.info('Validation for ' + $attrs.input + ' input validation key ' + $attrs.key + ' was not translated  - "' + error + '"');
+                        if ($translate) {
+                            $translate(watcher.message, watcher.translationProperties).then(function (translatedMessage) {
+                                $element.html(translatedMessage);
+                            }, function (error) {
+                                $log.info('Validation for ' + $attrs.input + ' input validation key ' + $attrs.key + ' was not translated  - "' + error + '"');
+                                $element.html(watcher.message);
+                            });
+                        }
+                        else { // no translation
                             $element.html(watcher.message);
-                        });
+                        }
                     }
                     watcher.show = function () {
                         $element.removeClass('hidden');
