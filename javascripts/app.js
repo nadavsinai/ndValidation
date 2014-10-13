@@ -2,11 +2,12 @@
 
     'use strict';
 
-    angular.module('app', ['pascalprecht.translate', 'ndValidation', 'restangular'])
+    angular.module('app', ['pascalprecht.translate', 'ndValidation', 'restangular', 'ui.validate'])
         .config(function ($translateProvider, RestangularProvider, ndValidationSvcProvider) {
-            ndValidationSvcProvider.setDefaultValidationSource('$validationConfig');  // our default validationConfig source
-            RestangularProvider.setBaseUrl('http://mrjson.com/data/53f1092d85f7fea8688b4567');
-            RestangularProvider.setRequestSuffix('.json'); //peculiarity of mrJSON
+            ndValidationSvcProvider
+                .setDefaultValidationSource('$validationConfig')
+                .setTranslationSvc('$translate');  // our default validationConfig source
+            RestangularProvider.setBaseUrl('http://jsonplaceholder.typicode.com/');
             $translateProvider.translations('en', {
                 "FORMS": {
                     "REQUIRED": "{{ input || 'This' }} field is required",
@@ -25,8 +26,11 @@
             $rootScope.config = config;
         })
         .controller('myCtrl', function ($scope, myModelSvc, Restangular) {
-            $scope.newModel = myModelSvc.new();
+            $scope.newModel = null;
             var editIndex;
+            $scope.showNewForm = function () {
+                $scope.newModel = myModelSvc.new();
+            };
             myModelSvc.getList().then(function (data) {
                 $scope.modelList = data; // and refill again
             });
@@ -40,8 +44,10 @@
                 });
             };
             $scope.saveNew = function (model) {
-                model.customPOST('item').then(function (savedModel) {
-                    $scope.modelList.push(savedModel);
+                model.save().then(function (savedModel) {
+                    $scope.newModel = null;
+                    model.id = savedModel.id;
+                    $scope.modelList.push(model);
                 });
             };
             $scope.save = function (model) {
