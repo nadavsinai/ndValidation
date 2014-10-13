@@ -54,32 +54,26 @@
 
         for example some code from <a target="_blank" href="https://docs.angularjs.org/guide/forms"> angular.js docs
             site</a>
-<pre><code>
-    &lt;form name=&quot;form&quot; class=&quot;css-form&quot; novalidate&gt;
-    E-mail:
-    &lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; name=&quot;uEmail&quot; required/&gt;&lt;br/&gt;
+<pre><code>&lt;form name=&quot;form&quot; class=&quot;css-form&quot; novalidate&gt;
+E-mail:
+&lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; name=&quot;uEmail&quot; required/&gt;&lt;br/&gt;
 
-    &lt;div ng-show=&quot;form.uEmail.$dirty &amp;&amp; form.uEmail.$invalid&quot;&gt;Invalid:
-    &lt;span ng-show=&quot;form.uEmail.$error.required&quot;&gt;Tell us your email.&lt;/span&gt;
-    &lt;span ng-show=&quot;form.uEmail.$error.email&quot;&gt;This is not a valid email.&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;/form&gt;
-</code></pre>
+&lt;div ng-show=&quot;form.uEmail.$dirty &amp;&amp; form.uEmail.$invalid&quot;&gt;Invalid:
+&lt;span ng-show=&quot;form.uEmail.$error.required&quot;&gt;Tell us your email.&lt;/span&gt;
+&lt;span ng-show=&quot;form.uEmail.$error.email&quot;&gt;This is not a valid email.&lt;/span&gt;
+&lt;/div&gt;
+&lt;/form&gt;</code></pre>
 
     if using nd-validate this boils down to
-    <pre><code>
-        &lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; nd-validate/&gt;
-    </code></pre>
+    <pre><code>&lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; nd-validate/&gt;</code></pre>
 
 
     the validation rules and messages are configured once per data model,
     for example for this model it would look like this
-    <pre><code>
-        User.prototype.$validationConfig = {
+    <pre><code>User.prototype.$validationConfig = {
             email:{required:'Tell us your email.'},
             format:{type:'email',message:'This is not a valid email.'}
-        }
-    </code></pre>
+        }</code></pre>
 
     The place in which this is declared is quite dynamic although I do
     recommend to cast proper data-models, validation configuration can be put on the scope and referenced from
