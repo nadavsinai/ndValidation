@@ -37,12 +37,12 @@
     <ul>
         <li><a href="#background">Background</a> </li>
         <li><a href="#install--usage">Installation & usage</a> </li>
-        <li><a href="#c">Demo App</a> </li>
+        <li><a href="#demo">Demo App</a> </li>
     </ul>
 </header>
 <section>
     <h2>
-        <a name="Background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background
+        <a  class="anchor" name='background' href="#background"><span class="octicon octicon-link"></span></a>Background
     </h2>
 
     <p>Writing forms in large applications is tiresome - one must repeat the same validation directives for each model
@@ -55,20 +55,20 @@
         for example some code from <a target="_blank" href="https://docs.angularjs.org/guide/forms"> angular.js docs
             site</a>
 <pre><code>
-    <form name="form" class="css-form" novalidate>
-        E-mail:
-        <input type="email" ng-model="user.email" name="uEmail" required/><br/>
+    &lt;form name=&quot;form&quot; class=&quot;css-form&quot; novalidate&gt;
+    E-mail:
+    &lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; name=&quot;uEmail&quot; required/&gt;&lt;br/&gt;
 
-        <div ng-show="form.uEmail.$dirty && form.uEmail.$invalid">Invalid:
-            <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
-            <span ng-show="form.uEmail.$error.email">This is not a valid email.</span>
-        </div>
-    </form>
+    &lt;div ng-show=&quot;form.uEmail.$dirty &amp;&amp; form.uEmail.$invalid&quot;&gt;Invalid:
+    &lt;span ng-show=&quot;form.uEmail.$error.required&quot;&gt;Tell us your email.&lt;/span&gt;
+    &lt;span ng-show=&quot;form.uEmail.$error.email&quot;&gt;This is not a valid email.&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;/form&gt;
 </code></pre>
 
     if using nd-validate this boils down to
     <pre><code>
-        <input type="email" ng-model="user.email" nd-validate/>
+        &lt;input type=&quot;email&quot; ng-model=&quot;user.email&quot; nd-validate/&gt;
     </code></pre>
 
 
